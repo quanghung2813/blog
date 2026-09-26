@@ -29,6 +29,7 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(1017, "Comment not found", HttpStatus.BAD_REQUEST),
     FORBIDDEN(1018, "You do not have sufficient permissions", HttpStatus.FORBIDDEN),
     LOGGED_OUT(1019, "User has logged out.", HttpStatus.UNAUTHORIZED),
+    TOKEN_EXPIRED(1020, "Token already expired", HttpStatus.UNAUTHORIZED),
     ;
 
     ErrorCode(int code, String message, HttpStatus httpStatus) {

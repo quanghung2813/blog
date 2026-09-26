@@ -1,5 +1,6 @@
 package com.example.blog.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LogoutRequest {
-    Long id;
+public class RefreshRequest {
+    @NotBlank
     String token;
 }
