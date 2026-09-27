@@ -13,6 +13,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +26,7 @@ public class CategoryService {
     CategoryRepository categoryRepository;
     CategoryMapper categoryMapper;
 
-    public CategoryResponse categories(CategoryRequest request, String token) {
+    public CategoryResponse categories(CategoryRequest request) {
         if (!categoryRepository.findBySlug(request.getSlug()).isEmpty()) {
             throw new DataIntegrityViolationException(Constance.UK_CATEGORY_SLUG);
         }
@@ -40,10 +42,10 @@ public class CategoryService {
                 .build();
     }
 
-    public ApiResponse<List<Category>> listCategory() {
-        var result = categoryRepository.findAll();
+    public ApiResponse<Page<CategoryResponse>> listCategory(Pageable pageable) {
+        var result = categoryRepository.findAllCategory(pageable);
 
-        return ApiResponse.<List<Category>>builder()
+        return ApiResponse.<Page<CategoryResponse>>builder()
                 .result(result)
                 .build();
     }

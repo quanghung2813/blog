@@ -30,6 +30,7 @@ public enum ErrorCode {
     FORBIDDEN(1018, "You do not have sufficient permissions", HttpStatus.FORBIDDEN),
     LOGGED_OUT(1019, "User has logged out.", HttpStatus.UNAUTHORIZED),
     TOKEN_EXPIRED(1020, "Token already expired", HttpStatus.UNAUTHORIZED),
+    POST_NOT_EXISTED(1021, "Post not existed", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatus httpStatus) {

@@ -15,6 +15,7 @@ import tools.jackson.databind.exc.MismatchedInputException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    ErrorCode errorCode;
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<ApiResponse> handleValidation(MethodArgumentNotValidException e) {
         e.printStackTrace();
@@ -89,5 +90,17 @@ public class GlobalExceptionHandler {
 
         response.setMessage(errorMessage);
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(value = AppException.class)
+    ResponseEntity<ApiResponse> handleAppException(AppException e) {
+        e.printStackTrace();
+        ErrorCode errorCode = e.getErrorCode();
+        ApiResponse response = new ApiResponse();
+        response.setCode(errorCode.getCode());
+        response.setMessage(errorCode.getMessage());
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(response);
     }
 }

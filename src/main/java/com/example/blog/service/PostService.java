@@ -146,20 +146,14 @@ public class PostService {
         }  else if (postCheck.isEmpty()){
             throw new AppException(ErrorCode.POST_NOT_FOUND);
         }
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_EXISTED));
 
-        var postUpdate = postMapper.toPost(request);
-        postUpdate = postRepository.save(postUpdate);
+        post.setTitle(request.getTitle());
+        post.setContent(request.getContent());
+        post = postRepository.save(post);
 
-        return PostResponse.builder()
-                .id(postUpdate.getId())
-                .authorId(postUpdate.getAuthorId())
-                .title(postUpdate.getTitle())
-                .slug(postUpdate.getSlug())
-                .content(postUpdate.getContent())
-                .status(postUpdate.getStatus())
-                .createdAt(postUpdate.getCreatedAt())
-                .updatedAt(postUpdate.getUpdatedAt())
-                .build();
+        return postMapper.toPostResponse(post);
     }
 
     public PostResponse updatePostStatus(long id, StatusRequest request, long userId) {

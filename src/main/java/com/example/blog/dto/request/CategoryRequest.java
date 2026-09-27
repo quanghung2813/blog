@@ -13,7 +13,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryRequest {
-    String token;
 
     @Size(min = 2, message = Constance.CATEGORY_NAME_INVALID)
     String name;

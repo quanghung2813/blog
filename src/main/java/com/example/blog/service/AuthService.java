@@ -1,5 +1,6 @@
 package com.example.blog.service;
 
+import com.example.blog.configuration.SecurityConfig;
 import com.example.blog.dto.request.*;
 import com.example.blog.dto.response.AuthResponse;
 import com.example.blog.dto.response.IntrospectResponse;
@@ -44,6 +45,7 @@ public class AuthService {
     UserRepository userRepository;
     UserMapper userMapper;
     InvalidatedTokenRepository invalidatedTokenRepository;
+    SecurityConfig securityConfig;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -80,7 +82,7 @@ public class AuthService {
 
         User user = userMapper.toUser(request);
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        PasswordEncoder passwordEncoder = securityConfig.passwordEncoder();
         user.setPasswordHash(passwordEncoder.encode(request.getPasswordHash()));
         Set<Roles> roles = new HashSet<>();
         roles.add(Roles.AUTHOR);
@@ -101,7 +103,7 @@ public class AuthService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new  AppException(ErrorCode.USER_NOT_EXISTED));
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        PasswordEncoder passwordEncoder = securityConfig.passwordEncoder();
 
         boolean authenticated = passwordEncoder.matches(request.getPasswordHash(), user.getPasswordHash());
 
